@@ -6,4 +6,4 @@ REM Activate the virtual environment
 call .venv\Scripts\activate.bat
 
 REM Run the agent
-uv run agent.py
+uv run main.py

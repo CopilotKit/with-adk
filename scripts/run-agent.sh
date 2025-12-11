@@ -7,4 +7,4 @@ cd "$(dirname "$0")/../agent" || exit 1
 source .venv/bin/activate
 
 # Run the agent
-uv run agent.py
+uv run main.py

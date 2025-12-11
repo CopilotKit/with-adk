@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@ag-ui/client": "0.0.42",
-    "@copilotkit/react-core": "beta",
-    "@copilotkit/react-ui": "beta",
-    "@copilotkit/runtime": "beta",
-    "next": "16.0.7",
+    "@copilotkit/react-core": "1.50.0",
+    "@copilotkit/react-ui": "1.50.0",
+    "@copilotkit/runtime": "1.50.0",
+    "next": "16.0.8",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "shiki": "^3.19.0"
@@ -30,7 +30,7 @@
     "@types/react-dom": "^19",
     "concurrently": "^9.1.2",
     "eslint": "^9",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "16.0.8",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
