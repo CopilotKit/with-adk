@@ -4,78 +4,51 @@ import { ProverbsCard } from "@/components/proverbs";
 import { WeatherCard } from "@/components/weather";
 import { AgentState } from "@/lib/types";
 import {
+  CopilotKit,
   useCoAgent,
-  useDefaultTool,
-  useFrontendTool,
-  useHumanInTheLoop,
   useRenderToolCall,
 } from "@copilotkit/react-core";
-import { CopilotKitCSSProperties, CopilotSidebar } from "@copilotkit/react-ui";
+import { CopilotSidebar } from "@copilotkit/react-core/v2";
 import { useState } from "react";
 
+
 export default function CopilotKitPage() {
-  const [themeColor, setThemeColor] = useState("#6366f1");
+  // 1. Define threads
+  const threads = [
+    "123",
+    "456",
+    "789",
+  ];
 
-  // 🪁 Frontend Actions: https://docs.copilotkit.ai/adk/frontend-actions
-  useFrontendTool({
-    name: "setThemeColor",
-    parameters: [
-      {
-        name: "themeColor",
-        description: "The theme color to set. Make sure to pick nice colors.",
-        required: true,
-      },
-    ],
-    handler({ themeColor }) {
-      setThemeColor(themeColor);
-    },
-  });
-
+  // 2. Set thread state
+  const [thread, setThread] = useState(threads[0]);
+  
   return (
-    <main
-      style={
-        { "--copilot-kit-primary-color": themeColor } as CopilotKitCSSProperties
-      }
-    >
-      <CopilotSidebar
-        disableSystemMessage={true}
-        clickOutsideToClose={false}
-        defaultOpen={true}
-        labels={{
-          title: "Popup Assistant",
-          initial: "👋 Hi, there! You're chatting with an agent.",
-        }}
-        suggestions={[
-          {
-            title: "Generative UI",
-            message: "Get the weather in San Francisco.",
-          },
-          {
-            title: "Frontend Tools",
-            message: "Set the theme to green.",
-          },
-          {
-            title: "Write Agent State",
-            message: "Add a proverb about AI.",
-          },
-          {
-            title: "Update Agent State",
-            message:
-              "Please remove 1 random proverb from the list if there are any.",
-          },
-          {
-            title: "Read Agent State",
-            message: "What are the proverbs?",
-          },
-        ]}
-      >
-        <YourMainContent themeColor={themeColor} />
-      </CopilotSidebar>
+    <main>
+      
+      <CopilotKit runtimeUrl="/api/copilotkit" agent="my_agent" >
+        <CopilotSidebar
+          // 3. Set threadId
+          threadId={thread}
+          defaultOpen={true}
+
+          // Custom Header w/ threads
+          // @ts-ignore
+          header={() => <div className="py-4 px-10 flex justify-between border-b items-center">
+            <h1 className="text-lg font-thin">AI Chat</h1>
+            <div className="flex gap-2">
+              <button className="bg-zinc-900 text-white px-4 py-2 rounded-full text-sm cursor-pointer hover:bg-zinc-800" onClick={() => setThread(threads[0])}>Thread 1</button>
+              <button className="bg-zinc-900 text-white px-4 py-2 rounded-full text-sm cursor-pointer hover:bg-zinc-800" onClick={() => setThread(threads[1])}>Thread 2</button>
+            </div>
+          </div>}
+        />
+        <YourMainContent />
+      </CopilotKit>
     </main>
   );
 }
 
-function YourMainContent({ themeColor }: { themeColor: string }) {
+function YourMainContent() {
   // 🪁 Shared State: https://docs.copilotkit.ai/adk/shared-state
   const { state, setState } = useCoAgent<AgentState>({
     name: "my_agent",
@@ -92,16 +65,15 @@ function YourMainContent({ themeColor }: { themeColor: string }) {
       name: "get_weather",
       description: "Get the weather for a given location.",
       parameters: [{ name: "location", type: "string", required: true }],
-      render: ({ args, result }) => {
-        return <WeatherCard location={args.location} themeColor={themeColor} />;
+      render: ({ args }) => {
+        return <WeatherCard location={args.location} />;
       },
     },
-    [themeColor],
   );
 
   return (
     <div
-      style={{ backgroundColor: themeColor }}
+      style={{ backgroundColor: "maroon" }}
       className="h-screen flex justify-center items-center flex-col transition-colors duration-300"
     >
       <ProverbsCard state={state} setState={setState} />

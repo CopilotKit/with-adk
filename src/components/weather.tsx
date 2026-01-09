@@ -11,10 +11,9 @@ function SunIcon() {
 
 // Weather card component where the location and themeColor are based on what the agent
 // sets via tool calls.
-export function WeatherCard({ location, themeColor }: { location?: string, themeColor: string }) {
+export function WeatherCard({ location }: { location?: string }) {
   return (
     <div
-    style={{ backgroundColor: themeColor }}
     className="rounded-xl shadow-xl mt-6 mb-4 max-w-md w-full"
   >
     <div className="bg-white/20 p-4 w-full">
